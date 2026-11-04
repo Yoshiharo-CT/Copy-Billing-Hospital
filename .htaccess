@@ -1,5 +1,9 @@
 RewriteEngine On
+<<<<<<< HEAD
 RewriteBase /billing_hospital-main/
+=======
+RewriteBase /billing_hospital/
+>>>>>>> origin/main
 
 RewriteCond %{THE_REQUEST} \s/+[^\s?]*/index\.php\? [NC]
 RewriteCond %{QUERY_STRING} (^|&)page=([a-z0-9-]+)(&|$) [NC]
