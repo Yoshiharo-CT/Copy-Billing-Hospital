@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@import "./mobile-layout.css";
+
+@source "../../*.html";
+@source "../../*.php";
+@source "../../views/**/*.php";
+@source "../js/**/*.js";
