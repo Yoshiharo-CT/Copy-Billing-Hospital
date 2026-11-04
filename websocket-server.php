@@ -93,7 +93,7 @@ class BillingNotifier implements MessageComponentInterface
         if ($this->patientPortalClients->contains($from)) {
             if ($action === 'subscribe_patient_portal') {
                 $this->patientPortalClients[$from] = [
-                    'patient_id' => max(0, (int)($data['patient_id'] ?? 0)),
+                    'patient_id' => max(0, (int) ($data['patient_id'] ?? 0)),
                     'admission_ids' => $this->normalizeSubscriptionIds($data['admission_ids'] ?? []),
                     'statement_ids' => $this->normalizeSubscriptionIds($data['statement_ids'] ?? []),
                 ];
@@ -113,13 +113,13 @@ class BillingNotifier implements MessageComponentInterface
         $eventName = (string) ($data['event'] ?? 'update');
 
         $frame = json_encode([
-            'type'       => 'event',
-            'event'      => $eventName,
-            'payload'    => $data['payload'] ?? [],
-            'roles'      => $data['roles'] ?? [],
-            'user_ids'   => $data['user_ids'] ?? [],
+            'type' => 'event',
+            'event' => $eventName,
+            'payload' => $data['payload'] ?? [],
+            'roles' => $data['roles'] ?? [],
+            'user_ids' => $data['user_ids'] ?? [],
             'department' => $data['department_id'] ?? null,
-            'timestamp'  => time(),
+            'timestamp' => time(),
         ]);
 
         if ($frame === false) {
@@ -134,10 +134,12 @@ class BillingNotifier implements MessageComponentInterface
         foreach ($this->clients as $client) {
             try {
                 if ($this->patientPortalClients->contains($client)) {
-                    if ($this->patientPortalSubscriptionMatches(
-                        $this->patientPortalClients[$client],
-                        is_array($data['payload'] ?? null) ? $data['payload'] : []
-                    )) {
+                    if (
+                        $this->patientPortalSubscriptionMatches(
+                            $this->patientPortalClients[$client],
+                            is_array($data['payload'] ?? null) ? $data['payload'] : []
+                        )
+                    ) {
                         $client->send('{"type":"portal.refresh"}');
                         $sent++;
                     }
@@ -211,29 +213,31 @@ class BillingNotifier implements MessageComponentInterface
 
     private function normalizeSubscriptionIds($ids): array
     {
-        if (!is_array($ids)) return [];
+        if (!is_array($ids))
+            return [];
 
         $normalized = [];
         foreach (array_slice($ids, 0, 50) as $id) {
-            $id = (int)$id;
-            if ($id > 0) $normalized[$id] = $id;
+            $id = (int) $id;
+            if ($id > 0)
+                $normalized[$id] = $id;
         }
         return array_values($normalized);
     }
 
     private function patientPortalSubscriptionMatches(array $subscription, array $payload): bool
     {
-        $patientId = (int)($payload['patient_id'] ?? 0);
-        if ($patientId > 0 && $patientId === (int)$subscription['patient_id']) {
+        $patientId = (int) ($payload['patient_id'] ?? 0);
+        if ($patientId > 0 && $patientId === (int) $subscription['patient_id']) {
             return true;
         }
 
-        $admissionId = (int)($payload['admission_id'] ?? 0);
+        $admissionId = (int) ($payload['admission_id'] ?? 0);
         if ($admissionId > 0 && in_array($admissionId, $subscription['admission_ids'], true)) {
             return true;
         }
 
-        $statementId = (int)($payload['statement_id'] ?? 0);
+        $statementId = (int) ($payload['statement_id'] ?? 0);
         return $statementId > 0 && in_array($statementId, $subscription['statement_ids'], true);
     }
 }
@@ -273,19 +277,13 @@ $rateLimiter = new SocketServer('127.0.0.1:8081');
 
 $rateLimiter->on(
     'connection',
-    static function (
-        SocketConnectionInterface $connection
-    ) use (&$loginAttempts): void {
+    static function (SocketConnectionInterface $connection) use (&$loginAttempts): void {
 
         $buffer = '';
 
         $connection->on(
             'data',
-            static function (string $chunk) use (
-                $connection,
-                &$buffer,
-                &$loginAttempts
-            ): void {
+            static function (string $chunk) use ($connection, &$buffer, &$loginAttempts): void {
 
                 $buffer .= $chunk;
 

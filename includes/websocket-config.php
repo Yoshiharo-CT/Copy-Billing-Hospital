@@ -2,7 +2,7 @@
 
 $configuredWebSocketPort = getenv('WEBSOCKET_PORT');
 $configuredWebSocketPort = $configuredWebSocketPort === false || $configuredWebSocketPort === ''
-    ? '8090'
+    ? '8091'
     : $configuredWebSocketPort;
 $validatedWebSocketPort = filter_var(
     $configuredWebSocketPort,

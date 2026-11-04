@@ -127,7 +127,7 @@
 
         const socketUrl = new URL(location.href);
         socketUrl.protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-        socketUrl.port = String(window.HOSPITAL_WEBSOCKET_PORT || 8090);
+        socketUrl.port = String(window.HOSPITAL_WEBSOCKET_PORT || 8091);
         socketUrl.pathname = '/';
         socketUrl.search = '';
         socketUrl.searchParams.set('channel', 'patient-portal');

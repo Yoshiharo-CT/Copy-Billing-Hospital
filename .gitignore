@@ -17,16 +17,9 @@ pnpm-debug.log*
 # ============================================================
 # Tailwind CSS build output
 # (source lives in assets/css/tailwind.css; regenerate with
-<<<<<<< HEAD
 #  `npm run tailwind:build`. Commit the compiled file for deployments
 #  that do not run the Tailwind build step.)
 # ============================================================
-=======
-#  `npm run tailwind:build`. Remove this line if you prefer to
-#  commit the compiled file.)
-# ============================================================
-/assets/css/app.css
->>>>>>> origin/main
 /assets/css/app.css.map
 
 # ============================================================
